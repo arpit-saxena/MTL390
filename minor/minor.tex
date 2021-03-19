@@ -4,13 +4,14 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amstext}
+\usepackage{booktabs}
 \setlength{\textheight}{8.875in} \setlength{\textwidth}{6.875in}
 \setlength{\columnsep}{0.3125in} \setlength{\topmargin}{0in}
 \setlength{\headheight}{0in} \setlength{\headsep}{0in}
 \setlength{\parindent}{1pc} \setlength{\oddsidemargin}{-.304in}
 \setlength{\evensidemargin}{-.304in}
 
-
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
 
 \begin{document}
 \setlength{\textheight}{8.5in}
@@ -49,9 +50,82 @@
 \item	Sampling Distributions 
 
 
-\item	Point and Interval Estimations
+\item	{
+  Point and Interval Estimations
 
+  For a distribution with \(k\) unknown parameters, method of moments uses \(k\) moments
+  to form a system of equations and solves it to find estimates for the parameters.
+  This throws away information contained in higher order moments. To remedy that, the
+  \textbf{Generalized Method of Moments (GMM)} takes \(q (> k)\) moments and minimizes
+  the sum of squares of difference between sample moments and moments calculated from
+  the distribution.
 
+  Consider the following samples taken from a Poisson distribution with unknown \(\lambda\).
+  Find an estimate for the parameter using both method of moments as well as generalized
+  method of moments (with 3 moments)
+
+  \begin{center}
+  \begin{tabular}{cccc}
+    \toprule
+    30 & 21 & 24 & 18 \\
+    28 & 25 & 24 & 25 \\
+    26 & 19 & 19 & 21 \\
+    22 & 34 & 22 & 15 \\
+    22 & 25 & 16 & 22 \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+
+  \textbf{Answer}
+
+  We first calculate expressions of three moments \(E[X], E[X^2] \text{ and } E[X^3]\) for
+  \(X \sim P(\lambda)\).
+
+  Using the MGF of the Poisson distribution, we find moments around 0:
+  \begin{align*}
+    M_X(t) &= exp(\lambda(e^t - 1)) \\
+    \implies M_X'(t) &= \lambda e^t exp(\lambda e^t - \lambda) \\
+    \implies M_X''(t) &= (\lambda e^t)^2 exp(\lambda e^t - \lambda) + \lambda e^t exp(\lambda e^t - \lambda) \\
+    \implies M_X'''(t) &= (\lambda e^t)^3 exp(\lambda e^t - \lambda) + 2 (\lambda e^t)^2 exp(\lambda e^t - \lambda) \\
+        &+ (\lambda e^t)^2 exp(\lambda e^t - \lambda) + \lambda e^t exp(\lambda e^t - \lambda) \\
+        &= (\lambda e^t)^3 exp(\lambda e^t - \lambda) + 3 (\lambda e^t)^2 exp(\lambda e^t - \lambda) + \lambda e^t exp(\lambda e^t - \lambda) \\
+  \end{align*}
+
+  Using these, we calculate the moments as:
+  \begin{align*}
+    E[X] &= M_X'(0) = \lambda \\
+    E[X^2] &= M_X''(0) = \lambda^2 + \lambda \\
+    E[X^3] &= M_X'''(0) = \lambda^3 + 3\lambda^2 + \lambda
+  \end{align*}
+
+  Next we calculate the sample moments. Let the samples be written as \(x_1, ..., x_{20}\). Then:
+  \begin{align*}
+    m_1 &= \sum_{i=1}^{20} x_i  = 22.9\\
+    m_2 &= \sum_{i=1}^{20} {x_i}^2 = 544.4 \\
+    m_3 &= \sum_{i=1}^{20} {x_i}^3 = 13424.5 \\
+  \end{align*}
+
+  Using the method of moments, we get:
+  \[\widehat{\lambda}_1 = m_1 = 22.9\]
+
+  For the generalized method of moments, we note that we can take any weighting of the
+  sample moments. In fact we can also take a positive definite matrix and define the
+  cost function that way. Suppose we somehow decided to keep the weights for \(m_1, m_2, m_3\)
+  to be \(100, 10, 1\) respectively. Then, we have the function:
+
+  \begin{align*}
+    Q(\lambda) &= 100(m_1 - E[X])^2 + 10(m_2 - E[X^2])^2 + 1(m_3 - E[X^3])^2 \\
+               &= 100(22.9 - \lambda)^2 + 10(544.4 - \lambda^2 - \lambda)^2 + (13424.5 - \lambda^3 - 3\lambda^2 - \lambda)^2
+  \end{align*}
+
+  Then the estimator is given by:
+  \[\widehat{\lambda}_2 = \argmin_\lambda{Q(\lambda)}\]
+
+  We note that \(Q(\lambda)\) is a polynomial in lambda with degree 6, so it's not practical
+  to calculate the minimum by hand. Using computer tools, we find:
+
+  \[\widehat{\lambda}_2 = 22.79\]
+}
 
 
 \item	Point and Interval Estimations
