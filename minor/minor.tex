@@ -5,6 +5,7 @@
 \usepackage{amssymb}
 \usepackage{amstext}
 \usepackage{booktabs}
+\usepackage[super]{nth}
 \setlength{\textheight}{8.875in} \setlength{\textwidth}{6.875in}
 \setlength{\columnsep}{0.3125in} \setlength{\topmargin}{0in}
 \setlength{\headheight}{0in} \setlength{\headsep}{0in}
@@ -12,6 +13,7 @@
 \setlength{\evensidemargin}{-.304in}
 
 \newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\allowdisplaybreaks
 
 \begin{document}
 \setlength{\textheight}{8.5in}
@@ -60,7 +62,63 @@
 \item	Descriptive Statistics
 
 
-\item	Sampling Distributions
+\item	{
+  Sampling Distributions
+
+  At an organization, there are \(10\) systems and each one has a different processing
+  power. Suppose there are \(10\) jobs whose loads (as defined by some metric) are
+  randomly picked from the interval \((0, 100)\). One job is assigned to one system,
+  and the assignment is done by arranging the systems and jobs in an increasing order
+  (of processing power and load respectively) and assign each job to the system at 
+  the same index in the other list.
+
+  Find the probability distribution of the load at each system. Hence or otherwise, find
+  the expected load of the job ending up on the third system (arranged in increasing order).
+
+  \textbf{Answer}
+
+  Let \(X_1, \ldots, X_{10}\) be samples from the distribution \(U(0, 1)\). Then
+  \(100X_i \sim U(0, 100) \,\forall i = 1,\ldots,10 \) would represent the job loads.
+  The ordering amongst \(X_i\)'s and \(100X_i\)'s is the same, so we work with \(X_i\)'s
+  to make our life easier.
+
+  Suppose \(X_i\)'s arranged in ascending order are \(X_{(1)}, X_{(2)}, \ldots, X_{(10)}\).
+
+  Let \(k \in \{1, \ldots, 10\}\) and \(n = 10\). Also, let \(\epsilon > 0\) be small. Then:
+  \begin{align*}
+    P(X_{(k)} \in [x, x + \epsilon]) &= P(\text{one of \({X_1, \ldots, X_{10}}\) lies in \([x, x + \epsilon]\)} \\
+                                     &  \text{~~~~~~~~~and exactly \(k-1\) are less than \(x\)}) \\
+      \intertext{(Now using the fact that \(X_i\)'s are independent)}
+      &= {n \choose 1} P(\text{one lies in \([x, x + \epsilon]\)}) P(\text{exactly \(k-1\) are less than \(x\)}) \\
+      &= n \epsilon {{n - 1} \choose {k - 1}} P(X_1 \leq x)^{k-1} P(X_1 > x)^{n-k} \tag*{(Since pdf is \(f(x) = 1\))} \\
+      &= n \epsilon \frac{(n - 1)!}{(k - 1)!\,(n-k)!} x^{k-1} (1-x)^{n-k} \\
+    \implies f_{X_{(k)}}(x) &= \frac{ x^{k-1} (1-x)^{n-k}}{\frac{{(k - 1)!\,(n-k)!}}{n!}} \\
+      &= \frac{x^{k-1} (1-x)^{n-k}}{\frac{\Gamma(k) \Gamma(n-k+1)}{\Gamma(n+1)}} \\
+      &= \frac{x^{k-1} (1-x)^{n-k}}{B(k, n - k + 1)} \tag*{(where \(B\) is the Beta function)}
+  \end{align*}
+
+  We note that
+  \[X \sim B(\alpha, \beta) \implies f_X(x) = \frac{x^{\alpha - 1}(1-x)^{\beta - 1}}{B(\alpha, \beta)}\]
+  where \(B(\cdot, \cdot)\) is the Beta-distribution.
+
+  Comparing the equations of Beta distribution's pdf and the pdf we obtained for \(X_{(k)}\), we
+  conclude that \[X_{(k)} \sim B(k, n - k + 1) \,\forall k \in \{1, \ldots, 10\}\]
+
+  Now, we find the expected value of \(X_{(3)}\) as:
+  \begin{align*}
+    E(X_{(k)}) &= \int_{0}^{1} x \times \frac{x^{k-1} (1-x)^{n-k}}{B(k, n - k + 1)} dx \\
+    \implies E(X_{(3)}) &= \int_{0}^{1} x \times \frac{x^{2} (1-x)^{8}}{B(3, 8)} dx \tag*{(\(\because n = 10\))} \\
+      &= \frac{1}{B(3, 8)} \int_{0}^{1} x^3 (1 - x)^8 dx \\
+      &= \frac{1}{B(3, 8)} \int_{0}^{1} (1 - x)^3 x^8 dx \\
+      &= \frac{1}{B(3, 8)} \int_{0}^{1} x^8 (1 - 3x + 3x^2 - x^3) dx \\
+      &= \frac{\Gamma(11)}{\Gamma(3)\Gamma(8)} \int_{0}^{1} (x^8 - 3x^9 + 3x^{10} - x^{11}) dx \\
+      &= \frac{10!}{2!\,7!} \left[\frac{1}{9} - \frac{3}{10} + \frac{3}{11} - \frac{1}{12}\right] \\
+      &= 360 \left[ \frac{1}{36} - \frac{3}{110} \right] \\
+      &= 0.182
+  \end{align*}
+
+  Therefore, the expected load of the job ending up at the \nth{3} system is \(100E(X_{(k)}) = 18.2\)
+}
 
 
 
