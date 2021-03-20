@@ -122,7 +122,76 @@
 
 
 
-\item	Sampling Distributions 
+\item	{
+  Sampling Distributions 
+
+  Consider that any insurance claim can be modelled as coming from an exponential distribution.
+  Two companies had 30 insurance claims over some period of time. Suppose that claims for the
+  companies come from exponential distributions with means 10 and 12 (in lakhs) respectively.
+  Then what is the probability that total insurance claims made to company 1 are greater than
+  claims made to company 2? Solve this using two different approaches and compare answers.
+
+  \textbf{Answer}
+
+  Insurance claims to companies 1 and 2 are distributed as Exp\((\frac{1}{10})\) and 
+  Exp\((\frac{1}{12})\) respectively.
+
+  Then one approach could be that sum of all insurance claims would be distributed as
+  Gamma(\(30, \frac{1}{10}\)) and Gamma(\(30, \frac{1}{12}\)) for company 1 and company 2
+  respectively. Let \(X \sim \text{Gamma}(n, \lambda_1)\), \(Y \sim \text{Gamma}(n, \lambda_2)\)
+  where \(n = 30, \lambda_1 = \frac{1}{10}, \lambda_2 = \frac{1}{12}\). Then,
+  \begin{align*}
+    P(X > Y) &= \int_{y=0}^{\infty} \int_{x=y}^{\infty} f_X(x) f_Y(y) \,dx \,dy \\
+      &= \int_{0}^{\infty} f_Y(y) \int_{y}^{\infty} f_X(x) \,dx \,dy \\
+      &= \int_{0}^\infty \frac{\lambda_2^n y^{n-1} e^{-\lambda_2 y}}{\Gamma(n)} \frac{\Gamma(n, \lambda_1 y)}{\Gamma(n)} dy \tag*{(where \(\Gamma(\cdot, \cdot)\) is the upper incomplete Gamma function)} \\
+      &= \int_{0}^\infty \frac{\left(\frac{1}{12}\right)^{30} y^{29} e^{-\frac{y}{12}}}{29!} \frac{\Gamma(30, \frac{y}{10})}{29!} dy
+  \end{align*}
+
+  Now, solving using mathematical computational tools, we get
+  \begin{equation}
+    P(X > Y) = 0.2411 \label{eq:1}
+  \end{equation}
+
+  The other approach is that since the exponentially distributed random variables are
+  iid and there are 30 of them, we can use CLT to approximate their sum. Claims for
+  first company have mean \(10\) and variance \(10^2 = 100\), for the second company
+  they have mean \(12\) and variance \(12^2 = 144\). Let \(\overline{X}, \overline{Y}\) be random variables
+  denoting sample average claims made to companies 1 and 2 respectively.
+
+  Then, by CLT we have:
+  \begin{align*}
+    \frac{\overline{X} - 10}{\frac{10}{\sqrt{30}}} &\sim \mathcal{N}(0, 1) \\
+    \frac{\overline{Y} - 12}{\frac{12}{\sqrt{30}}} &\sim \mathcal{N}(0, 1) \\
+  \end{align*}
+
+  Let \(Z_1 = \frac{\overline{X} - 10}{\frac{10}{\sqrt{30}}}\) and \(Z_2 = \frac{\overline{Y} - 12}{\frac{12}{\sqrt{30}}}\).
+  Then \(Z_1, Z_2\) are standard normal random variables and are also independent since
+  they are made of samples which are independent. Now,
+  \begin{align*}
+    \overline{X} &> \overline{Y} \\
+    \implies \frac{\overline{X} - 10}{\frac{10}{\sqrt{30}}} \frac{10}{\sqrt{30}} + 10 &> \frac{\overline{Y} - 12}{\frac{12}{\sqrt{30}}} \frac{12}{\sqrt{30}} + 12 \\
+    \implies {\frac{10}{\sqrt{30}}} Z_1 + 10 &> \frac{12}{\sqrt{30}} Z_2 + 12 \\
+    \implies \frac{10Z_1 - 12Z_2}{\sqrt{30}} &> 2 \\
+    \implies Z_1 &> \frac{2\sqrt{30} + 12Z_2}{10}
+  \end{align*}
+  \begin{align*}
+    \therefore P(\overline{X} > \overline{Y}) &= P\left(Z_1 > \frac{2\sqrt{30} + 12Z_2}{10}\right) \\
+      &= \int_{z_2=-\infty}^{\infty} \int_{z_1 = \frac{2\sqrt{30} + 12z_2}{10}}^{\infty} f_{Z_2}(z_2) f_{Z_1}(z_1) dz_1 dz_2 \\
+      &= \int_{-\infty}^{\infty} f_{Z_2}(z_2) \int_{z_1 = \frac{2\sqrt{30} + 12z_2}{10}}^{\infty}  f_{Z_1}(z_1) dz_1 dz_2 \\
+      &= \int_{-\infty}^{\infty} f_{Z_2}(z_2) \left\{1 - \Phi\left(\frac{2\sqrt{30} + 12z_2}{10}\right)\right\} dz_2 \tag*{(where \(\Phi\) is the standard normal CDF)} \\
+      &= \int_{-\infty}^{\infty} f_{Z_2}(z_2) \left\{\frac{1}{2} - \frac{1}{2}\text{erf}\left(\frac{2\sqrt{30} + 12z_2}{10\sqrt{2}}\right)\right\} dz_2
+          \tag*{(Where erf is the Gauss error function)} \\
+      &= \int_{-\infty}^{\infty} \frac{1}{\sqrt{2\pi}} e^{-\frac{z_2^2}{2}} \left\{\frac{1}{2} - \frac{1}{2}\text{erf}\left(\frac{2\sqrt{30} + 12z_2}{10\sqrt{2}}\right)\right\} dz_2
+  \end{align*}
+
+  The conversion from \(\Phi\) to erf helps us in using computational tools, which give the result as:
+  \begin{equation}
+    P(\overline{X} > \overline{Y}) = 0.2416 \label{eq:2}
+  \end{equation}
+
+  Now comparing (\ref{eq:1}) and (\ref{eq:2}), we observe the probabilities computes as 0.2411
+  and 0.2416 and these probabilities are very close.
+}
 
 
 \item	{
@@ -264,7 +333,7 @@
     Var(T(X)) &= E(T(X)^2) - (E(T(X)))^2 \nonumber\\
       &= \frac{(n - 1) \lambda^2}{n - 2} - \lambda^2 \nonumber\\
       &= \lambda^2 \left(\frac{n-1}{n-2} - 1\right) \nonumber\\
-    \implies Var(T(X)) &= \frac{\lambda^2}{n - 2} \label{eq:1}
+    \implies Var(T(X)) &= \frac{\lambda^2}{n - 2} \label{eq:3}
   \end{align}
 
   Now, we find the information for \(X_1\):
@@ -279,12 +348,12 @@
 
   From that we get total information of the sample as:
   \begin{equation}
-    I(\lambda) = \frac{n}{\lambda^2} \label{eq:2}
+    I(\lambda) = \frac{n}{\lambda^2} \label{eq:4}
   \end{equation}
 
   \begin{align*}
-    \text{LHS of Cramer Rao inequality} &= Var(T(X)) = \frac{\lambda^2}{n - 2} \tag*{From (\ref{eq:1})} \\
-    \text{RHS of Cramer Rao inequality} &= \frac{1}{I(\lambda)} = \frac{\lambda^2}{n} \tag*{Since \(E(T(X)) = \lambda\) and from (\ref{eq:2})} \\
+    \text{LHS of Cramer Rao inequality} &= Var(T(X)) = \frac{\lambda^2}{n - 2} \tag*{From (\ref{eq:3})} \\
+    \text{RHS of Cramer Rao inequality} &= \frac{1}{I(\lambda)} = \frac{\lambda^2}{n} \tag*{Since \(E(T(X)) = \lambda\) and from (\ref{eq:4})} \\
     \text{Thus, LHS of Cramer Rao inequality} &\neq \text{RHS of Cramer Rao inequality}
   \end{align*}
 
