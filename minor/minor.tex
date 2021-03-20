@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amstext}
+\usepackage{bm}
 \usepackage{booktabs}
 \usepackage[super]{nth}
 \setlength{\textheight}{8.875in} \setlength{\textwidth}{6.875in}
@@ -14,6 +15,11 @@
 
 \newcommand{\argmin}{\operatornamewithlimits{argmin}}
 \allowdisplaybreaks
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{width=7.5cm,compat=1.12}
+\usepgfplotslibrary{fillbetween}
 
 \begin{document}
 \setlength{\textheight}{8.5in}
@@ -39,22 +45,114 @@
 \item	{
     Descriptive Statistics
 
-    \begin{tabular}{cc}
-    \toprule
-      \(x_1\) &   \(x_2\) \\
-    \midrule
-     0.199072 &  1.227659 \\
-    -0.668432 & -1.050136 \\
-     1.071085 & -0.897862 \\
-     0.507552 & -1.056094 \\
-     0.434084 & -0.063376 \\
-    -2.059958 & -0.159318 \\
-     1.329366 & -0.388192 \\
-     1.734604 &  0.834843 \\
-    -1.982315 &  0.360589 \\
-    -2.721066 & -2.263463 \\
-    \bottomrule
-    \end{tabular}
+    Consider data taken from a bivariate distribution which is listed in the following table:
+
+    \begin{center}
+      \begin{tabular}{cc}
+      \toprule
+        \(x_1\) &   \(x_2\) \\
+      \midrule
+      4.597941 & -0.082831 \\
+      3.199353 &  1.097550 \\
+      1.680648 &  0.410578 \\
+      -1.885425 &  0.513452 \\
+      -0.207406 & -1.094364 \\
+      3.604727 & -0.528722 \\
+      2.043016 &  0.232730 \\
+      4.392772 & -0.806960 \\
+      0.923505 & -3.016915 \\
+      1.334248 &  0.789666 \\
+      4.421921 & -0.763320 \\
+      2.965662 &  1.642863 \\
+      2.223469 & -2.652278 \\
+      1.801136 &  1.881806 \\
+      -2.200512 &  0.049598 \\
+      \bottomrule
+      \end{tabular}
+    \end{center}
+
+    Find the biased and unbiased sample covariance matrices for the given data. Using that,
+    or otherwise, find the kurtosis and excess kurtosis of the given sample. Do the same
+    thing treating each variable as an individual sample from a distribution.
+
+    \textbf{Answer}
+
+    Let \(\bm{x_1},\ldots,\bm{x_n}\) be \(n\) samples from the data, then the biased sample
+    covariance matrix is given by:
+    \begin{align*}
+      S_1 &= \frac{1}{n} \sum_{i=1}^{n} \left[(\bm{x_i} - \bm{\overline{x}})(\bm{x_i} - \bm{\overline{x}})^T\right] \\
+      \intertext{Now, substituting values from the given data and calculating, we get}
+      S_1 &= \begin{bmatrix}
+        4.174 & -0.018 \\
+        -0.018 & 1.803
+      \end{bmatrix} \\
+      \intertext{Now, the unbiased matrix is given by}
+      S_2 &= \frac{n}{n - 1} S_1 \\
+        &= \frac{15}{14} S_1 \\
+        &= \begin{bmatrix}
+          4.472 & -0.019 \\
+          -0.019 & 1.932
+        \end{bmatrix}
+    \end{align*}
+
+    The sample kurtosis is then given by:
+    \begin{align*}
+      \text{Kurtosis} &= \frac{1}{n} \sum_{i=1}^{n} \left[(\bm{x_i} - \bm{\overline{x}})^T S_1^{-1} (\bm{x_i} - \bm{\overline{x}})\right]^2 \tag*{(From \cite{kurtpaper})} \\
+      \intertext{We first calculate the sample mean from the data as:}
+      \bm{\overline{x}} &= (1.926, -0.155)^T \\
+      \intertext{Then, we calculate the kurtosis using the given formula and get}
+      \text{Kurtosis} &= 5.93
+    \end{align*}
+
+    For a multivariate normal distribution distribution of \(p\) variables, the expected
+    kurtosis is (from \cite{kurtpaper}) \(p(p + 2)\). Thus, the expected kurtosis for
+    bivariate normal distribution is \(2 * 4 = 8\). Therefore, excess kurtosis equals 
+    \(5.93 - 8 = -2.07\) and our given sample is mesokurtic.
+
+    Treating the columns individually, we get
+
+    \begin{center}
+      \begin{tabular}{ccc}
+        \toprule
+        {} & Kurtosis & Excess Kurtosis \\
+        \midrule
+        \(x_1\) & 2.865 & -0.135 \\
+        \(x_2\) & 3.302 & 0.302\\
+        \bottomrule
+      \end{tabular}
+    \end{center}
+
+    % \begin{tikzpicture}
+
+    %   \pgfplotsset{
+    %       scale only axis,
+    %   }
+    
+    %   \begin{axis}[
+    %     xlabel=$A$,
+    %     ylabel=$B$,
+    %   ]
+    %     \addplot[only marks, mark=x]
+    %     coordinates{ % plot 1 data set
+    %     (0.199072 , 1.227659)
+    %     (-0.668432, -1.050136)
+    %      (1.071085, -0.897862)
+    %      (0.507552, -1.056094)
+    %      (0.434084, -0.063376)
+    %     (-2.059958, -0.159318)
+    %      (1.329366, -0.388192)
+    %      (1.734604,  0.834843)
+    %     (-1.982315,  0.360589)
+    %     (-2.721066, -2.263463)
+    %       % more points...
+    %     }; \label{plot_one}
+    
+    %     % plot 1 legend entry
+    %     \addlegendimage{/pgfplots/refstyle=plot_one}
+    %     \addlegendentry{plot 1}
+    %   \end{axis}
+    
+    % \end{tikzpicture}
         
 }
 
@@ -380,5 +478,10 @@
 
 
 \end{enumerate}
+
+\begin{thebibliography}{9}
+  \bibitem{kurtpaper} 
+  Cain, M.K., Zhang, Z. \& Yuan, KH. Univariate and multivariate skewness and kurtosis for measuring nonnormality: Prevalence, influence and estimation. Behav Res 49, 1716–1735 (2017). https://doi.org/10.3758/s13428-016-0814-1
+  \end{thebibliography}
 
 \end{document}
