@@ -5,6 +5,9 @@
 \usepackage{amssymb}
 \usepackage{amstext}
 \usepackage{bm}
+\usepackage{graphicx} 
+\usepackage{tikz}
+\usepackage{pgfplots}
 \usepackage{booktabs}
 \usepackage[super]{nth}
 \setlength{\textheight}{8.875in} \setlength{\textwidth}{6.875in}
@@ -16,10 +19,7 @@
 \newcommand{\argmin}{\operatornamewithlimits{argmin}}
 \allowdisplaybreaks
 
-\usepackage{tikz}
-\usepackage{pgfplots}
-\pgfplotsset{width=7.5cm,compat=1.12}
-\usepgfplotslibrary{fillbetween}
+\graphicspath{ {./images/} }
 
 \begin{document}
 \setlength{\textheight}{8.5in}
@@ -121,43 +121,183 @@
         \bottomrule
       \end{tabular}
     \end{center}
-
-    % \begin{tikzpicture}
-
-    %   \pgfplotsset{
-    %       scale only axis,
-    %   }
-    
-    %   \begin{axis}[
-    %     xlabel=$A$,
-    %     ylabel=$B$,
-    %   ]
-    %     \addplot[only marks, mark=x]
-    %     coordinates{ % plot 1 data set
-    %     (0.199072 , 1.227659)
-    %     (-0.668432, -1.050136)
-    %      (1.071085, -0.897862)
-    %      (0.507552, -1.056094)
-    %      (0.434084, -0.063376)
-    %     (-2.059958, -0.159318)
-    %      (1.329366, -0.388192)
-    %      (1.734604,  0.834843)
-    %     (-1.982315,  0.360589)
-    %     (-2.721066, -2.263463)
-    %       % more points...
-    %     }; \label{plot_one}
-    
-    %     % plot 1 legend entry
-    %     \addlegendimage{/pgfplots/refstyle=plot_one}
-    %     \addlegendentry{plot 1}
-    %   \end{axis}
-    
-    % \end{tikzpicture}
-        
 }
 
 
-\item	Descriptive Statistics
+\item	{
+  Descriptive Statistics
+
+  Given data is from world bank and contains values for the indicator ``Population ages 0-14
+  (\% of population)" for some 15 randomly selected countries and for 3 years, namely: 2005,
+  2010 and 2015. Visualize this data and draw observations.
+
+  \begin{center}
+    \begin{tabular}{lrrr}
+      \toprule
+      {} &       2005 &       2010 &       2015 \\
+      Country Code &            &            &            \\
+      \midrule
+      KOR          &  18.827339 &  16.101602 &  13.781719 \\
+      MEX          &  31.837208 &  29.507688 &  27.635969 \\
+      BOL          &  36.326591 &  34.489515 &  32.404954 \\
+      BDI          &  46.977947 &  45.140314 &  45.520683 \\
+      VCT          &  28.554330 &  25.833449 &  23.719170 \\
+      OSS          &  34.171454 &  31.320387 &  30.379485 \\
+      SLB          &  41.314868 &  40.751637 &  40.430065 \\
+      CUB          &  19.201050 &  17.741081 &  16.674866 \\
+      HPC          &  45.152638 &  44.694382 &  43.648154 \\
+      PNG          &  39.179415 &  38.302255 &  36.796778 \\
+      VEN          &  31.689552 &  29.907486 &  28.380399 \\
+      FJI          &  30.534296 &  29.000440 &  29.847679 \\
+      NOR          &  19.612168 &  18.811563 &  17.962317 \\
+      LTE          &  21.593859 &  19.838022 &  19.213434 \\
+      SAU          &  33.873896 &  29.703454 &  25.822845 \\
+      \bottomrule
+      \end{tabular}
+  \end{center}
+  
+  \textbf{Answer}
+
+  The given data is basically showing changing of distributions over time. We can
+  visualize one distribution by plotting a box plot and then we could plot multiple
+  box plots over the years to see how this data varies.
+
+  (The following plot was exported from python to tikz)
+
+  \begin{center}
+  % This file was created by tikzplotlib v0.9.8.
+\begin{tikzpicture}
+
+  \definecolor{color0}{rgb}{0.800490196078431,0.35343137254902,0.28578431372549}
+  \definecolor{color1}{rgb}{0.271078431372549,0.524019607843137,0.674019607843137}
+  \definecolor{color2}{rgb}{0.621078431372549,0.591666666666667,0.800490196078431}
+  
+  \begin{axis}[
+  axis background/.style={fill=white!89.8039215686275!black},
+  axis line style={white},
+  tick align=outside,
+  tick pos=left,
+  x grid style={white},
+  xlabel={Year},
+  xmin=-0.5, xmax=2.5,
+  xtick style={color=white!33.3333333333333!black},
+  xtick={0,1,2},
+  xticklabels={2005,2010,2015},
+  y grid style={white},
+  ylabel={Population ages 0-14 (\% of total population)},
+  ymajorgrids,
+  ymin=12.1219078577978, ymax=48.6377588573742,
+  ytick style={color=white!33.3333333333333!black}
+  ]
+  \path [draw=white!28.2352941176471!black, fill=color0, semithick]
+  (axis cs:-0.4,25.0740946066542)
+  --(axis cs:0.4,25.0740946066542)
+  --(axis cs:0.4,37.75300277905)
+  --(axis cs:-0.4,37.75300277905)
+  --(axis cs:-0.4,25.0740946066542)
+  --cycle;
+  \path [draw=white!28.2352941176471!black, fill=color1, semithick]
+  (axis cs:0.6,22.8357353371206)
+  --(axis cs:1.4,22.8357353371206)
+  --(axis cs:1.4,36.3958849969844)
+  --(axis cs:0.6,36.3958849969844)
+  --(axis cs:0.6,22.8357353371206)
+  --cycle;
+  \path [draw=white!28.2352941176471!black, fill=color2, semithick]
+  (axis cs:1.6,21.4663021291766)
+  --(axis cs:2.4,21.4663021291766)
+  --(axis cs:2.4,34.6008661709388)
+  --(axis cs:1.6,34.6008661709388)
+  --(axis cs:1.6,21.4663021291766)
+  --cycle;
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  0 25.0740946066542
+  0 18.8273387734188
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  0 37.75300277905
+  0 46.9779474483025
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  -0.2 18.8273387734188
+  0.2 18.8273387734188
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  -0.2 46.9779474483025
+  0.2 46.9779474483025
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  1 22.8357353371206
+  1 16.101601763675
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  1 36.3958849969844
+  1 45.140314182232
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  0.8 16.101601763675
+  1.2 16.101601763675
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  0.8 45.140314182232
+  1.2 45.140314182232
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  2 21.4663021291766
+  2 13.7817192668695
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  2 34.6008661709388
+  2 45.5206825176697
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  1.8 13.7817192668695
+  2.2 13.7817192668695
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  1.8 45.5206825176697
+  2.2 45.5206825176697
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  -0.4 31.8372080283644
+  0.4 31.8372080283644
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  0.6 29.7034538021151
+  1.4 29.7034538021151
+  };
+  \addplot [semithick, white!28.2352941176471!black]
+  table {%
+  1.6 28.3803986785511
+  2.4 28.3803986785511
+  };
+  \end{axis}
+  
+  \end{tikzpicture}
+\end{center}
+
+  From the given box plots, we can observe that the mean percentage population aged
+  0-14 has been creasing over the years. While the minimum value in this sample has
+  been decreasing, the maximum value is roughly the same. Thus there is an increased
+  variance in the value of this indicator. While there are some countries in which
+  the percentage of children has come down (could indicate aging population) while
+  in other countries of the world it has either increased or stayed the same.
+  
+}
 
 
 \item	{
