@@ -128,7 +128,111 @@
 }
 
 
-\item	Point and Interval Estimations
+\item	{
+  Point and Interval Estimations
+
+  Find an unbiased estimator for the parameter \(\lambda\) of an exponential 
+  distribution Exp(\(\lambda\)) as a multiple of the sample mean. Given that the
+  estimator found is the UMVUE, show that it does not achieve
+  equality in the Cramer-Rao inequality, consequently showing that achieving the
+  Cramer Rao Lower Bound is not a necessary condition for being UMVUE.
+
+  Customers arrive at a checkout counter with an average time of 10 minutes as observed
+  from 30 customers.
+  What is the time in which their order should be processed so that 70\% of the customers
+  don't find a line at the checkout counter.
+  
+  \textbf{Answer}
+
+  Let \(X_1, \ldots, X_n \sim \text{Exp}(\lambda)\) be \(n\) samples from an exponential
+  distribution with parameter \(\lambda\). Now, let
+
+  \begin{align*}
+    T(X) &= \frac{c}{\overline{X}} \\
+         &= \frac{cn}{\sum_{i=1}^{n} X_i}
+  \end{align*}
+
+  Using the fact that sum of exponentially distributed variables follows the Gamma distribution,
+  we define \(Z = \sum_{i = 1}^{n} X_i\) and note that \(Z \sim \text{Gamma}(n, \lambda)\).
+  Then \(T(X) = \frac{cn}{Z}\)
+
+  \begin{align*}
+    E(T(X)) &= E\left(\frac{cn}{Z}\right) \\
+            &= cn E\left(\frac{1}{Z}\right) \\
+            &= cn \int_{0}^{\infty} \frac{1}{z} \frac{\lambda^n z^{n-1} e^{-\lambda z}}{\Gamma(n)} dz \tag*{(\(\because Z \sim Gamma(n, \lambda)\))} \\
+            &= \frac{cn\lambda}{n-1} \underbrace{\int_{0}^{\infty} \frac{\lambda^{n-1} z^{n-2} e^{-\lambda z}}{\Gamma(n-1)} dz}_{ = 1} \tag*{(\(\because \Gamma(n) = (n-1) \Gamma(n-1)\))} \\
+            &= \frac{cn\lambda}{n-1}
+  \end{align*}
+
+  To make this estimator unbiased, we have
+  \begin{align*}
+    E(T(X)) &= \lambda \\
+    \implies \frac{cn\lambda}{n-1} &= \lambda \\
+    \implies c &= \frac{n-1}{n} \\
+    \therefore T(X) &= \frac{n - 1}{\sum_{i=1}^{n} X_i} \tag*{Since \(T(X) = \frac{cn}{\sum_{i=1}^{n} X_i}\)}
+  \end{align*}
+
+  Thus, we have found an unbiased estimator for T(X).
+
+  Now, for Cramer-Rao inequality:
+
+  \begin{align*}
+    E\left(T(X)^2\right) &= E\left(\left(\frac{n-1}{\sum_{i=1}^{n} X_i}\right)^2\right) \\
+      &= (n - 1)^2 E\left(\frac{1}{Z^2}\right) \\
+      &= (n - 1)^2 \int_{0}^{\infty} \frac{1}{z^2} \frac{\lambda^n z^{n-1} e^{-\lambda z}}{\Gamma(n)} dz \tag*{(\(\because Z \sim \text{Gamma}(n, \lambda)\))} \\
+      &= \frac{(n - 1)^2 \lambda^2}{(n - 1)(n - 2)}\underbrace{\int_{0}^{\infty}\frac{\lambda^{n-2} z^{n-3} e^{-\lambda z}}{\Gamma(n-2)} dz}_{=1} \tag*{(\(\because \Gamma(n) = (n-1) \Gamma(n-1)\))} \\
+      &= \frac{(n - 1) \lambda^2}{n - 2}
+  \end{align*}
+
+  Using this, we find the variance:
+  \begin{align}
+    Var(T(X)) &= E(T(X)^2) - (E(T(X)))^2 \nonumber\\
+      &= \frac{(n - 1) \lambda^2}{n - 2} - \lambda^2 \nonumber\\
+      &= \lambda^2 \left(\frac{n-1}{n-2} - 1\right) \nonumber\\
+    \implies Var(T(X)) &= \frac{\lambda^2}{n - 2} \label{eq:1}
+  \end{align}
+
+  Now, we find the information for \(X_1\):
+  \begin{align*}
+    I_1(\lambda) &= E\left[\left(\frac{\partial}{\partial\lambda} \log f(X_1; \lambda)\right)^2\right] \\
+      &= E\left[\left(\frac{\partial}{\partial\lambda} \log\left\{\lambda e^{-\lambda X}\right\}\right)^2\right] \\
+      &= E\left[\left(\frac{\partial}{\partial\lambda} \left\{\log{\lambda} - \lambda X\right\} \right)^2\right] \\
+      &= E\left[\left(\frac{1}{\lambda} - X\right)^2\right] \\
+      &= Var(X) \tag*{(\(\because E(X) = \frac{1}{\lambda}\))}\\
+      &= \frac{1}{\lambda^2}
+  \end{align*}
+
+  From that we get total information of the sample as:
+  \begin{equation}
+    I(\lambda) = \frac{n}{\lambda^2} \label{eq:2}
+  \end{equation}
+
+  \begin{align*}
+    \text{LHS of Cramer Rao inequality} &= Var(T(X)) = \frac{\lambda^2}{n - 2} \tag*{From (\ref{eq:1})} \\
+    \text{RHS of Cramer Rao inequality} &= \frac{1}{I(\lambda)} = \frac{\lambda^2}{n} \tag*{Since \(E(T(X)) = \lambda\) and from (\ref{eq:2})} \\
+    \text{Thus, LHS of Cramer Rao inequality} &\neq \text{RHS of Cramer Rao inequality}
+  \end{align*}
+
+  Now, assuming that the inter-arrival time of customers at the checkout counter is independent,
+  we can model the inter-arrival time as an exponential distribution.
+
+  We find an estimate for the parameter \(\lambda\) using the estimator derived previously as:
+  \[\widehat{\lambda} = \frac{n - 1}{\sum_{i=1}^{n} X_i} = \frac{n - 1}{n \overline{X}} = \frac{29}{30} \times 6 \text{ hour}^{-1} = 5.8 \text{ hour}^{-1}\]
+
+  Let \(t\) be the time to process one customer's order at the counter, then we want
+  \(P(X > t) >= 0.7\) where \(X \sim Exp(\widehat{\lambda}) = Exp(5.8)\).
+
+  \begin{align*}
+    P(X > t) &\geq 0.7 \\
+    \implies e^{-\widehat{\lambda} t} &\geq 0.7 \\
+    \implies \widehat{\lambda} t &\leq -\log{0.7} \\
+    \implies t &\leq -\frac{\log{0.7}}{\widehat{\lambda}} \\
+    \implies t &\leq 0.062 \text{ hours} = 3.72 \text{ minutes}
+  \end{align*}
+
+  Thus, each order should be processed in not more than 3.72 minutes for 70\% of the
+  customers to not have to wait in line at the counter.
+}
 
 
 \end{enumerate}
