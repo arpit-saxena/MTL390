@@ -5,11 +5,13 @@
 \usepackage{amssymb}
 \usepackage{amstext}
 \usepackage{cancel}
+\usepackage{mathtools}
 \setlength{\textheight}{8.875in} \setlength{\textwidth}{6.875in}
 \setlength{\columnsep}{0.3125in} \setlength{\topmargin}{0in}
 \setlength{\headheight}{0in} \setlength{\headsep}{0in}
 \setlength{\parindent}{1pc} \setlength{\oddsidemargin}{-.304in}
 \setlength{\evensidemargin}{-.304in}
+\renewcommand{\labelitemi}{\textendash}
 
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 
@@ -43,9 +45,163 @@
 \item	 Testing of Hypothesis
 
 
-\item	Analysis of correlation and regression 
+\item {
+    Analysis of correlation and regression 
 
+    Give the general formula for Spearman's rank correlation coefficient. Using it,
+    derive the simpler formula when distinct ranks are assumed. Emphasise where the
+    distinctness is assumed.
 
+    Consider the following data. Find the Spearman's rank correlation coefficient
+    using the general formula and the other formula with the distinct rank assumption.
+    What is the difference in the results?
+
+    \begin{center}
+    \begin{tabular}{ | l | l | }
+        \hline
+        \textbf{X} & \textbf{Y} \\
+        \hline
+        106 &	7 \\
+        100 &  	27 \\
+        86 & 2 \\
+        101 &	50 \\
+        99 &	29 \\
+        103 &	29 \\
+        99 &	20 \\
+        113 &	12 \\
+        112 &	6 \\
+        110 &	17 \\
+        \hline
+    \end{tabular}
+    \end{center}
+
+    \textbf{Answer}
+
+    Let us consider a sample of size \(n\). The \(n\) raw scores \(X_i, Y_i\) are
+    converted to ranks \(rg_{X_i}, rg_{Y_i}\), and \(r_s\) is computed as
+    \begin{equation}
+        r_s = \rho_{rg_X, rg_Y} = \frac{cov(rg_X, rg_Y)}{\sigma_{rg_x}\sigma_{rg_Y}}
+            \label{eq:q3:spearman_general_formula}
+    \end{equation}
+    where,
+    \begin{itemize}
+        \item \(\rho\) denotes the Pearson correlation coefficient, but applied to 
+            rank variables,
+        \item \(cov(rg_X, rg_Y)\) is the covariance of the rank variables
+        \item \(\rho_{rg_X}\) and \(\rho_{rg_Y}\) are the standard deviations of the rank variables
+    \end{itemize}
+
+    Let us directly work with ranks to derive the formula. We denote \(X_i\) and 
+    \(Y_i\) as the ranks. Then for each of these
+
+    \begin{align*}
+        \sum_{i=1}^{n} X_i &= 1 + 2 + \cdots + n \\
+            &= \frac{n(n+1)}{2} \\
+        \intertext{We note that the assumption of distinct ranks doesn't come into 
+        play here. This is because in case of ties an average of the tied ranks is
+        given to both the variables and the sum becomes the same in that case as well}
+        \overline{X} &= \frac{1}{n} \sum_{i=1}^{n} X_i \\
+            &= \frac{n + 1}{2} \\
+        \text{Similarly, } \overline{Y} &= \frac{n + 1}{2}
+    \end{align*}
+
+    Now we calculate the variance.
+    \begin{align*}
+        \sigma_X^2 &= \frac{1}{n} \sum_{i=1}^{n} (X_i - \overline{X})^2 \\
+            &= \frac{1}{n} \sum_{i=1}^{n} (X_i^2 - 2 X_i \overline{X} + \overline{X}^2) \\
+            &= \frac{1}{n} \left[ \sum_{i=1}^{n} X_i^2 - 2 \overline{X} \sum_{i=1}^n X_i + n \overline{{X}^2} \right] \\
+            &= \frac{1}{n} \left[ \sum_{i=1}^{n} X_i^2 - 2 \overline{X} (n \overline{X}) + n \overline{{X}^2} \right] \\
+            &= \frac{1}{n} \left[ \sum_{i=1}^{n} X_i^2 - n \overline{X}^2 \right] \\
+        \intertext{We use the assumption of distinct ranks here to get}
+        \sum_{i=1}^{n} X_i^2 &= 1^2 + 2^2 + \cdots + n^2 = \frac{n(n+1)(2n+1)}{6}
+        \intertext{Plugging in this value and the mean calculated earlier, we get}
+        \sigma_X^2 &= \frac{1}{n} \left[ \frac{n(n+1)(2n+1)}{6} - n \left\{\frac{n+1}{2}\right\}^2 \right] \\
+            &= \frac{1}{n} \left[ \frac{n(n+1)(2n+1)}{6} - \frac{n(n + 1)^2}{4} \right] \\
+            &= \frac{1}{n} \frac{n(n+1)}{12} \left[ 2(2n + 1) - 3(n+1) \right] \\
+            &= \frac{n + 1}{12} (n - 1) \\
+            &= \frac{n^2 - 1}{12} \\
+        \text{Similarly, we get } \sigma_Y^2 &= \frac{n^2 - 1}{12}
+    \end{align*}
+
+    Having calculated the variance of \(X_i, Y_i\), we calculate their covariance.
+    \begin{align*}
+        Cov(X, Y) &= \frac{1}{n} \sum_{i=1}^{n} (X_i - \overline{X}) (Y_i - \overline{Y}) \\
+            &= \frac{1}{n} \sum_{i=1}^{n} [X_i Y_i - X_i \overline{Y} - \overline{X} Y_i + \overline{X} \overline{Y}] \\
+            &= \frac{1}{n} \left\{ \sum_{i=1}^{n} X_i Y_i - \overline{Y} \sum_{i=1}^{n} X_i - \overline{X} \sum_{i=1}^{n} Y_i + n \overline{X} \overline{Y} \right\} \\
+            &= \frac{1}{n} \left\{ \sum_{i=1}^{n} X_i Y_i - n \overline{Y} \overline{X} - n \overline{X} \overline{Y} + n \overline{X} \overline{Y} \right\} \\
+            &= \frac{1}{n} \left\{ \sum_{i=1}^{n} X_i Y_i - n \overline{X} \overline{Y}\right\} \\
+            &= \frac{1}{n} \sum_{i=1}^{n} X_i Y_i - \overline{X} \overline{Y} \\
+            &= -\frac{1}{2n} \sum_{i=1}^{n} \left\{ X_i^2 + Y_i^2 -2 X_i Y_i - (X_i^2 + Y_i^2) \right\} - \overline{X} \overline{Y} \\
+            &= \frac{1}{2n} \sum_{i=1}^{n} \left\{ X_i^2 + Y_i^2 \right\} -\frac{1}{2n} \sum_{i=1}^{n} \left\{ X_i^2 + Y_i^2 -2 X_i Y_i \right\} - \overline{X} \overline{Y} \\
+            \intertext{We are once again invoking the assumption of distinct ranks to calculate the sum of \(X_i^2\) to get}
+        Cov(X, Y) &= \frac{1}{2n} \times 2\cdot \frac{n(n+1)(2n+1)}{6} - \frac{1}{2n} \sum_{i=1}^{n} \left\{ X_i - Y_i \right\}^2 - \overline{X} \overline{Y} \\
+            &= \frac{(n + 1)(2n + 1)}{6} - \frac{1}{2n} \sum_{i=1}^{n} d_i^2 - \left\{ \frac{n+1}{2} \right\}^2 \\
+            &= \frac{n + 1}{12} \{2(2n + 1) - 3(n + 1)\} - \frac{1}{2n} \sum_{i=1}^{n} d_i^2 \\
+            &= \frac{n + 1}{12} \cdot (n - 1) - \frac{1}{2n} \sum_{i=1}^{n} d_i^2 \\
+            &= \frac{n^2 - 1}{12} - \frac{1}{2n} \sum_{i=1}^{n} d_i^2
+    \end{align*}
+
+    Where \(d_i = X_i - Y_i\) is the difference of ranks.
+
+    Now we calculate the Spearman rank correlation coefficient using \eqref{eq:q3:spearman_general_formula}
+    \begin{align*}
+        r_s &= \frac{Cov(X, Y)}{\sigma_X \sigma_Y} \\
+            &= \frac{\frac{n^2 - 1}{12} - \frac{1}{2n} \sum_{i=1}^{n} d_i^2}{ \frac{n^2 - 1}{12} } \\
+        \therefore~ \Aboxed{r_s  &= 1 - \frac{6}{n(n^2 - 1)} \sum_{i=1}^{n} d_i^2}
+            \numberthis \label{eq:q3:spearman_distinct_formula}
+    \end{align*}
+
+    Thus we have obtained the formula for calculating the Spearman rank correlation coefficient in case
+    of distinct ranks.
+
+    Now for the given data, we first convert the raw scores into ranks. These are tabulated below:
+
+    \begin{center}
+        \begin{tabular}{ | c | c | c | c | c | c |}
+            \hline
+            X & Y & rank \(X_i\) & rank \(Y_i\) & \(d_i\) & \(d_i^2\)\\
+            \hline
+            106 &	7  & 7  &   3  & 4 & 16\\
+            100 &  	27 & 4  &   7  & -3 & 9\\
+            86 & 2     & 1  &   1  & 0 & 0\\
+            101 &	50 & 5  &   10 & -5 & 25\\
+            99 &	29 & 2.5  & 8.5  & -6 & 36\\
+            103 &	29 & 6  &  8.5 & -2.5 & 6.25\\
+            99 &	20 & 2.5  & 6  & -3.5 & 12.25\\
+            113 &	12 & 10  &  4  & 6 & 36\\
+            112 &	6  & 9  &   2 & 7 & 49\\
+            110 &	17 & 8  &   5 & 3 & 9\\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    Note that due to ties, there are some fractional ranks. Suppose there was a tie
+    between values at ranks 2 and 3. Then we assign both of these rank 2.5 which is
+    the mean of 2 and 3.
+
+    Now, we calculate the spearman rank correlation coefficient using the general 
+    formula \eqref{eq:q3:spearman_general_formula}.
+    \begin{align*}
+        Var(\text{rank } X) &= 8.2 \\
+        Var(\text{rank } Y) &= 8.2 \\
+        Cov(\text{rank } X, \text{rank } Y) &= -1.725 \\
+        \therefore r_s &= \frac{Cov(\text{rank } X, \text{rank } Y)}{\sqrt{Var(\text{rank } X) ~Var(\text{rank } Y)}} \\
+            &= \frac{-1.725}{\sqrt{8.2 \times 8.2}} \\
+            &= -0.210
+    \end{align*}
+
+    Now, using the Spearman rank correlation coefficient distinct rank formula
+    \eqref{eq:q3:spearman_distinct_formula}.
+    \begin{align*}
+        r_s &= 1 - \frac{6}{n(n^2 - 1)} \sum_{i=1}^{n} d_i^2 \\
+            &= -0.203
+    \end{align*}
+
+    We note that there is only an absolute difference of 0.007 in these calculated
+    values which is about 3.5\% relative difference. We note that it's a small
+    difference and the distinct rank formula may be useful even in case of ties
+    for approximation purposes.
+}
 
 \item	Analysis of correlation and regression 
 
