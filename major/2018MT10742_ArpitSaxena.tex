@@ -50,7 +50,117 @@
 \item	Analysis of correlation and regression 
 
 
-\item	Time Series Analysis
+\item {
+    Time Series Analysis
+
+    Show that every stationary MA(2) process without a unit root can be converted to an invertible
+    process by suitably changing the coefficients and white noise random variables.
+    Note that this can actually be done for all MA(q) processes. Is the following
+    MA(2) process invertible?
+    \[X_t = e_t - 3.2 e_{t-1} + 0.6 e_{t-2}\]
+    Here \(e_t\)'s are white noise random variables normally distributed with mean
+    0 and variance 2. If not, convert it to an invertible MA(2) process.
+
+    \textbf{Answer}
+
+    A general MA(2) process looks like the following:
+    \begin{align*}
+        X_t &= e_t + \lambda_1 e_{t-1} + \lambda_2 e_{t-2} \\
+        \intertext{We can use the backshift operator \(B\) to write}
+        X_t &= e_t + \lambda_1 B(e_{t}) + \lambda_2 B^2(e_{t}) \\
+        \implies X_t &= (1 + \lambda_1 B + \lambda_2 B^2) e_{t} \\
+        \intertext{We factorise the polynomial into linear factors to get}
+        X_t &= (1 - \mu_1 B)(1 - \mu_2 B) e_t
+    \end{align*}
+
+    Thus we get the general characteristic polynomial of the MA(2) process as
+    \((1 - \mu_1 B)(1 - \mu_2 B)\). The zeros of the polynomial are \(\frac{1}{\mu_1}\)
+    and \(\frac{1}{\mu_2}\) respectively.
+
+    We note that the way to find if the process is invertible is that the absolute
+    value of the zeros of the characteristic polynomial are greater than 1. If not, there would be atleast one zero which is less than 1. We note that the
+    absence of unit roots means that no zero is exactly equal to 1.
+
+    We show that a process with the characteristic polynomial with one root \(\mu\) taken
+    as the reciprocal and variance of the white noise multiplied by \(\mu^2\) yields
+    a process with the same autocovariance function.
+
+    Let us define \(\lambda_0 = 1\). Then,
+    \begin{align*}
+        Cov(X_t, X_{t+\tau}) &= E(X_t X_{t+\tau}) - E(X_t)E(X_{t+\tau}) \\
+            &= E(X_t X_{t+\tau}) \tag*{(since \(E(X_t) = 0 \,\forall t\))} \\
+            &= E\left[\left\{\sum_{j=0}^{q}\lambda_j e_{t-j}\right\}\left\{\sum_{k=0}^{q}\lambda_k e_{t-k+\tau}\right\}\right] \\
+            &= \sum_{j=0}^{q} \sum_{k=0}^{q} \lambda_j \lambda_k E(e_{t-j} e_{t-k+\tau}) \\
+        \intertext{Since \(e_t\)'s are independent and identically distributed with variance as
+        \(\sigma^2\)}
+        Cov(X_t, X_{t+\tau}) &= \sum_{j=0}^{q} \sum_{k=0}^{q} \lambda_j \lambda_k \sigma^2 \delta_{t-j,t-k+\tau}
+            \tag*{(Where \(\delta_{ij}\) is the Kronecker delta)}
+    \end{align*}
+
+    To remove the Kronecker delta, We make the following observations:
+    \begin{itemize}
+        \item When \(\tau = 0\), the \((j, k)\) pairs which will be included are \((0, 0), (1, 1), \ldots, (q, q)\)
+        \item For \(\tau = 1\), we'll have \((0, 1), (1, 2), \ldots, (q-1, q)\)
+        \item For \(\tau = 2\), we'll have \((0, 2), (1, 3), \ldots, (q-2, q)\)
+        \item \(\vdots\)
+        \item For \(\tau = q-1\), we'll have \((0, q-1), (1, q)\)
+        \item For \(\tau = q\), we'll have \((0, q)\)
+        \item For \(\tau > q\), \(t - j \neq t - k + \tau \,\forall j, k = 0, \ldots, q\)
+    \end{itemize}
+
+    So we'll have the following simplification:
+    \begin{equation}
+        Cov(X_t, X_{t+\tau}) = \begin{cases}
+            \sigma^2 \sum_{j=0}^{q-\tau} \lambda_j \lambda_{j+\tau} & \text{if } \tau = 0, 1, \ldots, q \\
+            0 & \tau > q
+        \end{cases}
+    \end{equation}
+
+    Now for a process \(X_t = (1 - \mu_1 B)(1 - \mu_2 B)e_t\), we have \(\lambda_1 = -\mu_1 - \mu_2\)
+    and \(\lambda_2 = \mu_1 \mu_2\), then we get
+    \begin{align*}
+        Cov(X_t, X_t) &= \sigma^2 [1 + (\mu_1 + \mu_2)^2 + \mu_1^2 \mu_2^2] \\
+        Cov(X_t, X_{t+1}) &= \sigma^2 [(-\mu_1-\mu_2) + (-\mu_1-\mu_2)(\mu_1 \mu_2)] \\
+            &= - \sigma^2 (\mu_1 + \mu_2) (1 + \mu_1 \mu_2) \\
+        Cov(X_t, X_{t+2}) &= \sigma^2 \mu_1 \mu_2 \\
+        Cov(X_t, X_{t+\tau}) &= 0 \,\forall \tau > 2
+    \end{align*}
+
+    If we replace \(\mu_1\) by \(\frac{1}{\mu_1}\) in the above equations, we'll get
+    \begin{align*}
+        Cov(X_t, X_t) &= \sigma^2 \left[1 + \left(\frac{1}{\mu_1} + \mu_2\right)^2 + \frac{1}{\mu_1^2} \mu_2^2\right] \\
+            &= \frac{\sigma^2}{\mu_1^2} \left[\mu_1^2 + \left(1 + \mu_1 \mu_2\right)^2 + \mu_2^2\right] \\
+            &= \frac{\sigma^2}{\mu_1^2} \left[\mu_1^2 + 1 + 2 \mu_1 \mu_2 + \mu_1^2 \mu_2^2 + \mu_2^2\right] \\
+            &= \frac{\sigma^2}{\mu_1^2} \left[1 + (\mu_1 + \mu_2)^2 + \mu_1^2 \mu_2^2\right] \\
+        Cov(X_t, X_{t+1}) &= - \sigma^2 \left(\frac{1}{\mu_1} + \mu_2\right) \left(1 + \frac{1}{\mu_1} \mu_2\right) \\
+            &= - \frac{\sigma^2}{\mu_1^2} \left(1 + \mu_1 \mu_2\right) \left(\mu_1 + \mu_2\right) \\
+        Cov(X_t, X_{t+2}) &= \sigma^2 \frac{1}{\mu_1} \mu_2 \\
+        &= \frac{\sigma^2}{\mu_1^2} ~\mu_1 \mu_2 \\
+        Cov(X_t, X_{t+\tau}) &= 0 \,\forall \tau > 2
+    \end{align*}
+
+    We observe that we have the exact same autocovariance equations with the variance
+    \(\sigma^2\) divided by \(\mu^2\).
+    
+    Thus, we can change a root of the characteristic polynomial to its reciprocal by suitably
+    changing the variance of the white noise variables to get the same autocovariance function.
+    This way, we can change all roots which are less than 1 to become more than 1 and obtain an
+    invertible process this way.
+
+    For the process \(X_t = e_t - 3.2 e_{t-1} + 0.6 e_{t-2}\), the characteristic polynomial
+    is \(\theta(B) = 1 - 3.2 B + 0.6 B^2 = (1 - 3 B)(1 - 0.2 B)\). The zeros of this
+    polynomial are \(\frac{1}{3}, 5\). Since one of them is less than 1, this process is not
+    invertible.
+
+    We can make this invertible by the procedure outlined above. We'll replace the root
+    \(\frac{1}{3}\) by 3 and change the variance of white noise which is currently 2 to
+    \(\frac{2}{\frac{1}{3}^2} = 18\). Thus, we obtain the process
+    \begin{align*}
+        X_t &= (1 - \frac{1}{3} B)(1 - 0.2 B) e_t \\
+            &= e_t - \frac{8}{15} e_{t-1} + \frac{1}{15} e_{t-2}
+    \end{align*}
+    where \(e_t\)'s are white noise variables normally distributed with mean 0 and variance 18.
+}
 
 
 \item {
