@@ -6,6 +6,8 @@
 \usepackage{amstext}
 \usepackage{cancel}
 \usepackage{mathtools}
+\usepackage{tabularx}
+\usepackage{physics}
 \setlength{\textheight}{8.875in} \setlength{\textwidth}{6.875in}
 \setlength{\columnsep}{0.3125in} \setlength{\topmargin}{0in}
 \setlength{\headheight}{0in} \setlength{\headsep}{0in}
@@ -203,7 +205,124 @@
     for approximation purposes.
 }
 
-\item	Analysis of correlation and regression 
+\item {
+    Analysis of correlation and regression
+
+    Consider the following data from the agricultural sector of Taiwan, 1958-1972.
+    We are interested in seeing the effect of labor days (\(X_2\)) and the real capital input (\(X_3\))
+    on the real gross product (\(Y\)).
+
+    \begin{enumerate}
+        \item Write the regression equation when regressing \(X_2\) and \(X_3\) on \(Y\)
+        \item Derive the estimators for the coefficients using Ordinary Least Squares
+        \item Find the estimates of \(Y\) using the estimators obtained. Also find the standard error.
+        \item Find the \(R^2\) and adjusted-\(R^2\) values.
+    \end{enumerate}
+
+    \begin{tabularx}{\linewidth}{ |X|X|X|X| }
+        \hline
+        Year & Real gross product (millions of NT \$), \(Y\) & Labor days (millions of days), \(X_2\) & Real capital input (millions of NT \$), \(X_3\) \\
+        \hline
+        1958 & 16607.7 & 275.5 & 17803.7  \\
+        1959 & 17511.3 & 274.4 & 18096.8  \\
+        1960 & 20171.2 & 269.7 & 18271.8  \\
+        1961 & 20932.9 & 267   & 19167.3  \\
+        1962 & 20406   & 267.8 & 19647.6  \\
+        1963 & 20831.6 & 275   & 20803.5  \\
+        1964 & 24806.3 & 283   & 22076.6  \\
+        1965 & 26465.8 & 300.7 & 23445.2  \\
+        1966 & 27403   & 307.5 & 24939    \\
+        1967 & 28628.7 & 303.7 & 26713.7  \\
+        1968 & 29904.5 & 304.7 & 29957.8  \\
+        1969 & 27508.2 & 298.6 & 31585.9  \\
+        1970 & 29035.5 & 295.5 & 33474.5  \\
+        1971 & 29281.5 & 299   & 34821.8  \\
+        1972 & 31535.8 & 288.1 & 41794.3  \\
+        \hline
+    \end{tabularx}
+
+    \textbf{Answer}
+
+    The population regression equation is
+    \[Y = \beta_1 + \beta_2 X_2 + \beta_3 X_3 + \epsilon\]
+    where \(\epsilon\) is an error term.
+
+    The sample regression equation using the estimators is
+    \[Y_i = \widehat{\beta}_1 + \widehat{\beta}_2 X_{2i} + \widehat{\beta}_3 X_{3i} + \epsilon_i \]
+
+    For a sample with \(n\) observations, we want to minimise
+    \[S = \sum_{i=1}^{n} \left\{ Y_i - \widehat{\beta}_1 - \widehat{\beta}_2 X_{2i} - \widehat{\beta}_3 X_{3i} \right\}^2\]
+
+    To do this, we use the first derivative tests and set the partial derivatives of \(S\)
+    with respect to the estimators as 0. We get the equations
+    \begin{align*}
+        \pdv{S}{\widehat{\beta}_1} &= -2 \sum_{i=1}^{n} \left\{ Y_i - \widehat{\beta}_1 - \widehat{\beta}_2 X_{2i} - \widehat{\beta}_3 X_{3i} \right\} \\
+        \pdv{S}{\widehat{\beta}_2} &= - \sum_{i=1}^{n} X_{2i} \left\{ Y_i - \widehat{\beta}_1 - \widehat{\beta}_2 X_{2i} - \widehat{\beta}_3 X_{3i} \right\} \\
+        \pdv{S}{\widehat{\beta}_3} &= - \sum_{i=1}^{n} X_{3i} \left\{ Y_i - \widehat{\beta}_1 - \widehat{\beta}_2 X_{2i} - \widehat{\beta}_3 X_{3i} \right\} \\
+    \end{align*}
+    
+    Setting these equations equal to zero, we obtain the normal equations
+    \begin{align*}
+        \sum_{i=1}^{n} \left\{ Y_i - \widehat{\beta}_1 - \widehat{\beta}_2 X_{2i} - \widehat{\beta}_3 X_{3i} \right\} &= 0 \\
+        \implies \sum_{i=1}^{n} Y_i - n \widehat{\beta}_1 - \widehat{\beta}_2 \sum_{i=1}^{n} X_{2i} - \widehat{\beta}_3 \sum_{i=1}^{n} X_{3i} &= 0 \\
+        \sum_{i=1}^{n} X_{2i} \left\{ Y_i - \widehat{\beta}_1 - \widehat{\beta}_2 X_{2i} - \widehat{\beta}_3 X_{3i} \right\} &= 0  \\
+        \implies \sum_{i=1}^{n} X_{2i} Y_i - \widehat{\beta}_1 \sum_{i=1}^{n} X_{2i} - \widehat{\beta}_2 \sum_{i=1}^{n} X_{2i}^2 - \widehat{\beta}_3 \sum_{i=1}^{n} X_{2i} X_{3i} &= 0 \\
+        \sum_{i=1}^{n} X_{3i} \left\{ Y_i - \widehat{\beta}_1 - \widehat{\beta}_2 X_{2i} - \widehat{\beta}_3 X_{3i} \right\} &= 0 \\
+        \implies \sum_{i=1}^{n} X_{3i} Y_i - \widehat{\beta}_1 \sum_{i=1}^{n} X_{3i} - \widehat{\beta}_2 \sum_{i=1}^{n} X_{2i} X_{3i} - \widehat{\beta}_3 \sum_{i=1}^{n} X_{3i}^2 &= 0
+    \end{align*}
+
+    Putting the values from the data, we obtain the equations as:
+    \begin{align*}
+        371030 - 15 \widehat{\beta}_1 - 4310.2 \widehat{\beta}_2 - 382599.5 \widehat{\beta}_3 &= 0 \\
+        107449076 - 4310.2 \widehat{\beta}_1 - 1241590.88 \widehat{\beta}_2 - 110882249 \widehat{\beta}_3 &= 0 \\
+        9907328434 - 382599.5 \widehat{\beta}_1 - 110882249 \widehat{\beta}_2 - 10512155203.39 \widehat{\beta}_3 &= 0
+    \end{align*}
+
+    Solving this system of equations, we get the values as
+    \[\widehat{\beta}_1 = -28067.2, \widehat{\beta}_2 = 147.94, \widehat{\beta}_3 = 0.4036\]
+
+    Using these, we calculate the estimated \(Y\) values, which are written in the table below:
+    \begin{center}
+    \begin{tabularx}{0.8\linewidth}{|X|X|X|X|X|}
+        \hline
+        Year & \(Y\)   & \(X_2\) & \(X_3\) & Estimated \(Y\) \\
+        \hline
+        1958 & 16607.7 & 275.5 & 17803.7 & 19875.84332 \\
+        1959 & 17511.3 & 274.4 & 18096.8 & 19831.40448 \\
+        1960 & 20171.2 & 269.7 & 18271.8 & 19206.71648 \\
+        1961 & 20932.9 & 267   & 19167.3 & 19168.70228 \\
+        1962 & 20406   & 267.8 & 19647.6 & 19480.90336 \\
+        1963 & 20831.6 & 275   & 20803.5 & 21012.5926  \\
+        1964 & 24806.3 & 283   & 22076.6 & 22709.93576 \\
+        1965 & 26465.8 & 300.7 & 23445.2 & 25880.84072 \\
+        1966 & 27403   & 307.5 & 24939   & 27489.7304  \\
+        1967 & 28628.7 & 303.7 & 26713.7 & 27643.82732 \\
+        1968 & 29904.5 & 304.7 & 29957.8 & 29101.08608 \\
+        1969 & 27508.2 & 298.6 & 31585.9 & 28855.75324 \\
+        1970 & 29035.5 & 295.5 & 33474.5 & 29159.3782  \\
+        1971 & 29281.5 & 299   & 34821.8 & 30220.93848 \\
+        1972 & 31535.8 & 288.1 & 41794.3 & 31422.49348 \\
+        \hline
+    \end{tabularx}
+    \end{center}
+
+    The standard error is given by
+    \[\sqrt{\frac{\sum(Y - Y_{est})^2}{n}} = 1416.13 \text{ NT \$}\]
+
+    Now we calculate the \(R^2\) and adjusted-\(R^2\) values.
+    \begin{align*}
+        R^2 &= 1 - \frac{\text{Residual Sum of Squares}}{\text{Total Sum of Squares}} \\
+            &= 1 - \frac{\sum \left( Y_i - \widehat{Y}_i \right)^2}{\sum \left( Y_i - \overline{Y} \right)^2} \\
+            &= 0.91 \\
+        \text{Adjusted-\(R^2\), } \overline{R}^2 &= 1 - \frac{\frac{\text{Residual Sum of Squares}}{n - k}}{\frac{\text{Total Sum of Squares}}{n - 1}} \\
+        \intertext{Here \(n\) is the number of variables in the sample (=15) and \(k\) is the number of parameters in the regression (=3)}
+        \implies  \overline{R}^2 &= 1 - \frac{\sum \left( Y_i - \widehat{Y}_i \right)^2 / (n - k)}{\sum \left( Y_i - \overline{Y} \right)^2 / (n - 1)} \\
+            &= 0.89
+    \end{align*}
+
+    Thus we see that 90\% of the variation in \(Y\) is explained by the variations 
+    in \(X_2\) and \(X_3\) through this model.
+}
 
 
 \item {
