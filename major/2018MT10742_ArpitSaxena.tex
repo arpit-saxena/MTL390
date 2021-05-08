@@ -41,7 +41,77 @@
 
 
 
-\item	Testing of Hypothesis
+\item {
+    Testing of Hypothesis
+
+    Let \((X_1, X_2, \ldots, X_m)\) be a random sample from a Binomial Distribution
+    \(B(n, p)\) with \(p\) unknown. Consider the hypothesis test of the null hypothesis
+    \(H_0: p = p_0\) where \(p_0 \in [0, 1]\) is fixed, against the alternative
+    composite hypothesis \(H_1: p > p_0\). Find the uniformly most powerful test of size
+    \(\alpha\).
+
+    Following are the number of heads obtained on tossing a coin 5 times and repeating
+    it for 5 times. At 95\% level of confidence, test the null hypothesis of the coin
+    to be a fair coin against the alternative hypothesis of the coin to be heads-biased 
+    (i.e. it lands on heads with more probability than it does on tails).
+
+    Number of heads: 3 4 3 5 3
+
+    \textbf{Answer}
+
+    The joint pdf of \((X_1, X_2, \ldots, X_m)\) is
+    \begin{align*}
+        L(p; x_1, x_2, \ldots, x_n) &= \prod_{i = 1}^{m} \left\{ {n \choose x_i} p^{x_i} (1 - p)^{n - x_i} \right\} \\
+            &= \prod_{i=1}^{m} {n \choose x_i} ~ p^{\sum x_i} (1 - p)^{mn - \sum x_i}
+    \end{align*}
+
+    Let \(p'\) be a number greater than \(p_0\), then we take ratio of joint probability
+    with parameter \(p_0\) to that of \(p'\) and let \(C\) be the set of points such that
+    the ratio is less than a constant k.
+    \begin{align*}
+        \left(\frac{p}{p'}\right)^{\sum x_i} \left(\frac{1-p}{1-p'}\right)^{mn - \sum x_i} &\leq k
+        \intertext{Now taking \(\log\) on both sides, we get}
+        \log\left\{\frac{p}{p'}\right\}\cdot\sum_{i=1}^{m} x_i + \log\left\{\frac{1 - p}{1 - p'}\right\}\cdot\left(mn - \sum_{i=1}^{m} x_i\right) &\leq \log{k} \\
+        \implies \sum_{i=1}^{m} x_i \cdot \left[ \log\left\{\frac{1 - p}{1 - p'}\right\} - \log\left\{\frac{p}{p'}\right\} \right] &\geq mn \log\left\{\frac{1 - p}{1 - p'}\right\} - \log{k} \\
+        \implies \sum_{i=1}^{m} x_i &\geq \frac{mn \log\left\{\frac{1 - p}{1 - p'}\right\} - \log{k}}{\log\left\{\frac{1 - p}{1 - p'}\right\} - \log\left\{\frac{p}{p'}\right\}} = c
+    \end{align*}
+
+    Now we invoke Neyman-Pearson lemma to show that the region
+    \[C = \left\{ (x_1, x_2, \ldots, x_2): \sum_{i=1}^{m} x_i \geq c \right\}\]
+    is the best rejection region for testing the simple hypothesis \(H_0: p = p_0\)
+    against the simple alternative hypothesis \(H_1: p = p'\).
+
+    Now we need to find \(c\) so that the rejection region \(C\) is of the desired
+    size \(\alpha\). Under the null hypothesis, the random variable \(\sum_{i=1}^m X_i\)
+    follows the Binomial distribution \(B(mn, p_0)\) because sum of binomial variables
+    with the same probability \(p\) is a binomial variable with the first terms added.
+
+    Now we have to use the equation
+    \[\alpha \leq P\left(\sum_{i=1}^{m} X_i \geq c\right)\] to find \(c\). Note that for a
+    binomial distribution like we have here, \(c\) has no closed form expression.
+    OncAFtere we find \(c\) using numerical methods, the region
+    \[C = \left\{ (x_1, x_2, \ldots, x_2): \sum_{i=1}^{m} x_i \geq c \right\}\]
+    is the best critical region of size \(\alpha\) for testing \(H_0: p = p_0\)
+    against the alternative hypothesis \(H_1: p = p'\).
+
+    Observe that this region will be valid for all \(p' > p_0\). Therefore, the
+    region \(C\) is a uniformly most powerful critical region of size \(\alpha\)
+    for testing \(H_0: p = p_0\) against \(H_1: p > p_0\).
+
+    For the coin toss example, we have \(p_0 = 0.5\) and we solve
+    \begin{align*}
+        \alpha &\leq P\left(\sum_{i=1}^{m} X_i \geq c\right) \\
+        \implies 0.05 &\leq (0.5)^{25} \left[ {25 \choose c} + {25 \choose {c + 1}} + \cdots + {25 \choose 25} \right]
+    \end{align*}
+
+    Since we have a small number at hand, we can just use brute-force to find the value of \(c\).
+
+    We find that \(c \leq 17\) satisfies the inequality.
+
+    From the given data, \(\sum x_i = 3 + 4 + 3 + 5 + 3 = 18 > 17\), and thus lies outside
+    the critical region. Thus the null hypothesis of the coin to be a fair coin can
+    be rejected at 95\% confidence level.
+}
 
 
 \item	 Testing of Hypothesis
