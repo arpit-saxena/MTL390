@@ -43,7 +43,7 @@ and Age-Adjusted Death Rate being the dependent variable.
 
 - **Question (4c)**: Estimate for $\sigma^2 = 229335846.73$
 
-- **Question (4d)**: $R^2 = 0.0078$, adjusted $R^2 = 0.0071$
+- **Question (4d)**: $R^2 = 0.0078$, adjusted $R^2 = 0.0075$
 
 - **Question (4e)**:
 
@@ -63,7 +63,7 @@ and Age-Adjusted Death Rate being the dependent variable.
 
 - **Question (4c)**: Estimate for $\sigma^2 = 49.71$
 
-- **Question (4d)**: $R^2 = 0.7548$, adjusted $R^2 = 0.7546$
+- **Question (4d)**: $R^2 = 0.7548$, adjusted $R^2 = 0.7547$
 
 - **Question (4e)**:
 
